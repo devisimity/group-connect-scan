@@ -138,7 +138,7 @@ const UserProfile = () => {
                     variant="secondary"
                     size="icon"
                     className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity"
-                    onClick={() => navigate(`/groups/${group.id}`)}
+                    onClick={() => navigate(`/groups/${group.id}/photos`)}
                   >
                     <ArrowRight className="w-4 h-4" />
                   </Button>
