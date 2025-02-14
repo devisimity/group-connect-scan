@@ -1,10 +1,10 @@
-
 import { useState } from 'react';
 import { ProfileCard } from '@/components/ProfileCard';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { Search, UserPlus, Users } from 'lucide-react';
+import { Chat } from '@/components/Chat';
 
 // Mock data for demonstration
 const mockMembers = [
@@ -19,6 +19,8 @@ const mockMembers = [
 const GroupMembers = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const { toast } = useToast();
+  const [chatOpen, setChatOpen] = useState(false);
+  const [selectedMember, setSelectedMember] = useState<(typeof mockMembers)[0] | null>(null);
 
   const filteredMembers = mockMembers.filter(member =>
     member.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -29,6 +31,11 @@ const GroupMembers = () => {
       title: "Coming Soon",
       description: "Invite functionality will be available soon!",
     });
+  };
+
+  const handleMessageClick = (member: typeof mockMembers[0]) => {
+    setSelectedMember(member);
+    setChatOpen(true);
   };
 
   return (
@@ -112,15 +119,20 @@ const GroupMembers = () => {
               name={member.name}
               image={member.image}
               status={member.status}
-              onMessageClick={() => {
-                toast({
-                  title: "Coming Soon",
-                  description: "Chat functionality will be available soon!",
-                });
-              }}
+              onMessageClick={() => handleMessageClick(member)}
             />
           ))}
         </div>
+
+        {/* Chat Dialog */}
+        {selectedMember && (
+          <Chat
+            isOpen={chatOpen}
+            onClose={() => setChatOpen(false)}
+            recipientName={selectedMember.name}
+            recipientImage={selectedMember.image}
+          />
+        )}
       </div>
     </div>
   );
