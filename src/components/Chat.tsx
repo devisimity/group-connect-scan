@@ -4,7 +4,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Send, X } from 'lucide-react';
+import { Send, ChevronLeft } from 'lucide-react';
 
 interface Message {
   id: number;
@@ -57,10 +57,18 @@ export const Chat = ({ isOpen, onClose, recipientName, recipientImage }: ChatPro
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px] h-[600px] p-0">
+      <DialogContent className="sm:max-w-[425px] h-[600px] p-0" hideCloseButton>
         {/* Chat Header */}
         <div className="p-4 border-b flex items-center justify-between bg-white">
           <div className="flex items-center gap-3">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={onClose}
+              className="text-gray-500 hover:text-gray-900 mr-2"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </Button>
             <img
               src={recipientImage}
               alt={recipientName}
@@ -71,14 +79,6 @@ export const Chat = ({ isOpen, onClose, recipientName, recipientImage }: ChatPro
               <p className="text-sm text-gray-500">Online</p>
             </div>
           </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={onClose}
-            className="text-gray-500 hover:text-gray-900"
-          >
-            <X className="h-5 w-5" />
-          </Button>
         </div>
 
         {/* Chat Messages */}
