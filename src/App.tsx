@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-ro
 import { Home, Users, User, Image } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import Index from "./pages/Index";
+import Groups from "./pages/Groups";
 import GroupMembers from "./pages/GroupMembers";
 import UserProfile from "./pages/UserProfile";
 import GroupPhotos from "./pages/GroupPhotos";
@@ -79,6 +80,7 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/groups" element={<Groups />} />
             <Route path="/members" element={<GroupMembers />} />
             <Route path="/profile" element={<UserProfile />} />
             <Route path="/groups/:groupId/photos" element={<GroupPhotos />} />
