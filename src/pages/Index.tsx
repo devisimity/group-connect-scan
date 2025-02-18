@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar } from '@/components/ui/avatar';
-import { Heart, MessageCircle, Share2 } from 'lucide-react';
-import { ScrollArea } from '@/components/ui/scroll-area';
+import { Heart, MessageCircle, Share2, Plus } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface Post {
   id: number;
@@ -19,6 +19,7 @@ interface Post {
 }
 
 const Index = () => {
+  const navigate = useNavigate();
   const [posts, setPosts] = useState<Post[]>([
     {
       id: 1,
@@ -70,26 +71,19 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Stories bar */}
+      {/* Header */}
       <div className="bg-white border-b sticky top-0 z-10">
-        <ScrollArea className="w-full py-4">
-          <div className="flex gap-4 px-4">
-            {[...Array(8)].map((_, i) => (
-              <div key={i} className="flex flex-col items-center gap-1">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-yellow-400 to-fuchsia-600 p-[2px]">
-                  <div className="w-full h-full rounded-full border-2 border-white">
-                    <img
-                      src={`https://images.unsplash.com/photo-${1649972904349 + i}-6e44c42644a7`}
-                      alt={`Story ${i + 1}`}
-                      className="w-full h-full rounded-full object-cover"
-                    />
-                  </div>
-                </div>
-                <span className="text-xs text-gray-600">user_{i + 1}</span>
-              </div>
-            ))}
-          </div>
-        </ScrollArea>
+        <div className="max-w-lg mx-auto px-4 py-3 flex justify-between items-center">
+          <h1 className="text-xl font-semibold">Feed</h1>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => navigate('/groups')}
+            className="text-primary hover:text-primary/90"
+          >
+            <Plus className="h-6 w-6" />
+          </Button>
+        </div>
       </div>
 
       {/* Feed */}
