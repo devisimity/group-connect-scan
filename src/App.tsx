@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import Index from "./pages/Index";
 import Groups from "./pages/Groups";
 import GroupMembers from "./pages/GroupMembers";
+import Members2 from "./pages/Members2";
 import UserProfile from "./pages/UserProfile";
 import GroupPhotos from "./pages/GroupPhotos";
 import NotFound from "./pages/NotFound";
@@ -82,6 +83,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/groups" element={<Groups />} />
             <Route path="/members" element={<GroupMembers />} />
+            <Route path="/members2" element={<Members2 />} />
             <Route path="/profile" element={<UserProfile />} />
             <Route path="/groups/:groupId/photos" element={<GroupPhotos />} />
             <Route path="*" element={<NotFound />} />
