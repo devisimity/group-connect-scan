@@ -57,7 +57,7 @@ export const Chat = ({ isOpen, onClose, recipientName, recipientImage }: ChatPro
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px] h-[600px] p-0" hideCloseButton>
+      <DialogContent className="sm:max-w-[425px] h-[600px] p-0">
         {/* Chat Header */}
         <div className="p-4 border-b flex items-center justify-between bg-white">
           <div className="flex items-center gap-3">
