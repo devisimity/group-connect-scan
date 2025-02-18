@@ -1,123 +1,166 @@
 
 import { useState } from 'react';
-import { QRScanner } from '@/components/QRScanner';
+import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { useToast } from '@/hooks/use-toast';
-import { Users, QrCode, Plus } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Avatar } from '@/components/ui/avatar';
+import { Heart, MessageCircle, Share2 } from 'lucide-react';
+import { ScrollArea } from '@/components/ui/scroll-area';
+
+interface Post {
+  id: number;
+  username: string;
+  userImage: string;
+  image: string;
+  caption: string;
+  likes: number;
+  comments: number;
+  timestamp: Date;
+  liked: boolean;
+}
 
 const Index = () => {
-  const [showScanner, setShowScanner] = useState(false);
-  const [manualCode, setManualCode] = useState('');
-  const { toast } = useToast();
-  const navigate = useNavigate();
-
-  const handleCodeScanned = (code: string) => {
-    toast({
-      title: "Success!",
-      description: `Joined group with code: ${code}`,
-    });
-    setShowScanner(false);
-    // Navigate to members page after successful join
-    navigate('/members');
-  };
-
-  const handleManualSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (manualCode.trim()) {
-      handleCodeScanned(manualCode);
-      setManualCode('');
+  const [posts, setPosts] = useState<Post[]>([
+    {
+      id: 1,
+      username: "alex.photo",
+      userImage: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7",
+      image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d",
+      caption: "Working on some new projects 💻✨",
+      likes: 124,
+      comments: 12,
+      timestamp: new Date(Date.now() - 3600000),
+      liked: false
+    },
+    {
+      id: 2,
+      username: "sarah.designs",
+      userImage: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
+      image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c",
+      caption: "Team meeting day! Great discussions and new ideas 🚀",
+      likes: 89,
+      comments: 8,
+      timestamp: new Date(Date.now() - 7200000),
+      liked: false
+    },
+    {
+      id: 3,
+      username: "tech.creative",
+      userImage: "https://images.unsplash.com/photo-1581092795360-fd1ca04f0952",
+      image: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81",
+      caption: "Innovation happens when we collaborate 🤝",
+      likes: 245,
+      comments: 18,
+      timestamp: new Date(Date.now() - 10800000),
+      liked: false
     }
-  };
+  ]);
 
-  const handleCreateGroup = () => {
-    toast({
-      title: "Coming Soon",
-      description: "Group creation will be available soon!",
-    });
+  const handleLike = (postId: number) => {
+    setPosts(posts.map(post => {
+      if (post.id === postId) {
+        return {
+          ...post,
+          liked: !post.liked,
+          likes: post.liked ? post.likes - 1 : post.likes + 1
+        };
+      }
+      return post;
+    }));
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-6">
-      <div className="max-w-6xl mx-auto space-y-8">
-        <div className="text-center space-y-4 animate-fadeIn">
-          <h1 className="text-4xl font-bold text-gray-800">Group Connect</h1>
-          <p className="text-gray-600 max-w-md mx-auto">
-            Join existing groups or create your own to connect with others
-          </p>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-          {/* Join Group Card */}
-          <div className="bg-white/30 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-gray-200 space-y-4">
-            <div className="text-center space-y-2">
-              <div className="bg-primary/10 w-12 h-12 rounded-full flex items-center justify-center mx-auto">
-                <Users className="w-6 h-6 text-primary" />
-              </div>
-              <h2 className="text-xl font-semibold text-gray-800">Join a Group</h2>
-              <p className="text-gray-600 text-sm">Connect with existing groups using QR code or group code</p>
-            </div>
-
-            {!showScanner ? (
-              <div className="space-y-4">
-                <Button
-                  onClick={() => setShowScanner(true)}
-                  className="w-full bg-primary hover:bg-primary/90 text-white"
-                >
-                  <QrCode className="mr-2 h-4 w-4" />
-                  Scan QR Code
-                </Button>
-                
-                <div className="relative">
-                  <div className="absolute inset-0 flex items-center">
-                    <span className="w-full border-t" />
-                  </div>
-                  <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-gradient-to-br from-gray-50 to-gray-100 px-2 text-gray-500">
-                      or enter code manually
-                    </span>
+    <div className="min-h-screen bg-gray-50">
+      {/* Stories bar */}
+      <div className="bg-white border-b sticky top-0 z-10">
+        <ScrollArea className="w-full py-4">
+          <div className="flex gap-4 px-4">
+            {[...Array(8)].map((_, i) => (
+              <div key={i} className="flex flex-col items-center gap-1">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-yellow-400 to-fuchsia-600 p-[2px]">
+                  <div className="w-full h-full rounded-full border-2 border-white">
+                    <img
+                      src={`https://images.unsplash.com/photo-${1649972904349 + i}-6e44c42644a7`}
+                      alt={`Story ${i + 1}`}
+                      className="w-full h-full rounded-full object-cover"
+                    />
                   </div>
                 </div>
+                <span className="text-xs text-gray-600">user_{i + 1}</span>
+              </div>
+            ))}
+          </div>
+        </ScrollArea>
+      </div>
 
-                <form onSubmit={handleManualSubmit} className="space-y-4">
-                  <Input
-                    type="text"
-                    placeholder="Enter group code"
-                    value={manualCode}
-                    onChange={(e) => setManualCode(e.target.value)}
-                    className="w-full"
+      {/* Feed */}
+      <div className="max-w-lg mx-auto pt-4 px-4 space-y-6">
+        {posts.map(post => (
+          <Card key={post.id} className="overflow-hidden">
+            {/* Post header */}
+            <div className="p-4 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <Avatar>
+                  <img
+                    src={post.userImage}
+                    alt={post.username}
+                    className="w-full h-full object-cover"
                   />
-                  <Button type="submit" className="w-full" variant="outline">
-                    Join Group
-                  </Button>
-                </form>
+                </Avatar>
+                <div>
+                  <p className="font-semibold text-sm">{post.username}</p>
+                  <p className="text-xs text-gray-500">
+                    {post.timestamp.toLocaleDateString()}
+                  </p>
+                </div>
               </div>
-            ) : (
-              <div className="mt-4">
-                <QRScanner onCodeScanned={handleCodeScanned} />
-              </div>
-            )}
-          </div>
-
-          {/* Create Group Card */}
-          <div className="bg-white/30 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-gray-200 space-y-4">
-            <div className="text-center space-y-2">
-              <div className="bg-primary/10 w-12 h-12 rounded-full flex items-center justify-center mx-auto">
-                <Plus className="w-6 h-6 text-primary" />
-              </div>
-              <h2 className="text-xl font-semibold text-gray-800">Create a Group</h2>
-              <p className="text-gray-600 text-sm">Start your own group and invite others to join</p>
+              <Button variant="ghost" size="icon">
+                <Share2 className="h-5 w-5" />
+              </Button>
             </div>
-            
-            <Button 
-              onClick={handleCreateGroup}
-              className="w-full bg-primary hover:bg-primary/90 text-white mt-4"
-            >
-              Create New Group
-            </Button>
-          </div>
-        </div>
+
+            {/* Post image */}
+            <div className="relative aspect-square">
+              <img
+                src={post.image}
+                alt="Post content"
+                className="w-full h-full object-cover"
+              />
+            </div>
+
+            {/* Post actions */}
+            <div className="p-4 space-y-3">
+              <div className="flex items-center gap-4">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => handleLike(post.id)}
+                  className={post.liked ? "text-red-500" : "text-gray-600"}
+                >
+                  <Heart className={`h-6 w-6 ${post.liked ? "fill-current" : ""}`} />
+                </Button>
+                <Button variant="ghost" size="icon">
+                  <MessageCircle className="h-6 w-6" />
+                </Button>
+              </div>
+
+              {/* Likes count */}
+              <p className="font-semibold text-sm">
+                {post.likes} likes
+              </p>
+
+              {/* Caption */}
+              <div className="space-y-1">
+                <p className="text-sm">
+                  <span className="font-semibold">{post.username}</span>{" "}
+                  {post.caption}
+                </p>
+                <p className="text-sm text-gray-500">
+                  View all {post.comments} comments
+                </p>
+              </div>
+            </div>
+          </Card>
+        ))}
       </div>
     </div>
   );
